@@ -12,4 +12,12 @@ class IndexController extends Controller
         $list = $model->where('1', 1)->select();
         dump($list);
     }
+
+    public function studentList()
+    {
+        $studentLogic = D('Student', 'Logic');
+        $date = date('Y-m-d', time());
+        $list = $studentLogic->getStudentList($date);
+        dump($list);
+    }
 }

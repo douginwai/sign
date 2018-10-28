@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50723
+Source Server Version : 50505
 Source Host           : localhost:3306
-Source Database       : signin
+Source Database       : test
 
 Target Server Type    : MYSQL
-Target Server Version : 50723
+Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-10-28 20:45:13
+Date: 2018-10-28 21:56:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `tb_grade`;
 CREATE TABLE `tb_grade` (
   `id` int(8) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) DEFAULT NULL,
+  `grade_name` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
