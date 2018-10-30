@@ -18,9 +18,14 @@ class IndexController extends Controller
     public function studentList()
     {
         $studentLogic = D('Student', 'Logic');
-        $date = date('Y-m-d', time());
+        $date = I('date', date('Y-m-d', time()));
         $list = $studentLogic->getStudentList($date);
-        dump($list);
+        $feedback = [
+            'status' => 1,
+            'msg' => 'succ',
+            'data' => $list
+        ];
+        $this->ajaxReturn($feedback);
     }
 
     public function state()
@@ -28,10 +33,15 @@ class IndexController extends Controller
         $studentLogic = D('Student', 'Logic');
         $date = date('Y-m-d', time());
         $list = $studentLogic->getState($date);
+        list($studentCount, $recordCount) = $studentLogic->sumState($date);
         $feedback = [
             'status' => 1,
             'msg' => 'succ',
-            'data' => $list
+            'data' => [
+                'list' => $list,
+                'studentCount' => $studentCount,
+                'recordCount' => $recordCount
+            ]
         ];
         $this->ajaxReturn($feedback);
     }
@@ -72,15 +82,116 @@ class IndexController extends Controller
 
     public function addClass()
     {
-        $grade_name = I('class_name', '');
-        if (!$grade_name) {
+        $class_name = I('class_name', '');
+        $grade_id = I('grade_id', '');
+        if (!$class_name || !$grade_id) {
             $feedback = [
                 'status' => -1,
-                'msg' => 'grade_name is needed',
+                'msg' => 'class_name and grade_id are needed',
             ];
             $this->ajaxReturn($feedback);
         }
         $studentLogic = D('Student', 'Logic');
-
+        $data = [
+            'class_name' => $class_name,
+            'grade_id' => $grade_id
+        ];
+        $res = $studentLogic->addClass($data);
+        if ($res === true) {
+            $feedback = [
+                'status' => 1,
+                'msg' => 'succ',
+            ];
+        } else {
+            $feedback = [
+                'status' => -1,
+                'msg' => $res,
+            ];
+        }
+        $this->ajaxReturn($feedback);
     }
+
+    public function deleteClass()
+    {
+        $id = I('id', '');
+        if (!$id) {
+            $feedback = [
+                'status' => -1,
+                'msg' => 'id is needed',
+            ];
+            $this->ajaxReturn($feedback);
+        }
+        $studentLogic = D('Student', 'Logic');
+        $res = $studentLogic->deleteClass($id);
+        if ($res === true) {
+            $feedback = [
+                'status' => 1,
+                'msg' => 'succ',
+            ];
+        } else {
+            $feedback = [
+                'status' => -1,
+                'msg' => $res,
+            ];
+        }
+        $this->ajaxReturn($feedback);
+    }
+
+    public function addStudent()
+    {
+        $name = I('name', '');
+        $class_id = I('class_id', '');
+        if (!$name || !$class_id) {
+            $feedback = [
+                'status' => -1,
+                'msg' => 'name and class_id are needed',
+            ];
+            $this->ajaxReturn($feedback);
+        }
+        $studentLogic = D('Student', 'Logic');
+        $data = [
+            'name' => $name,
+            'class_id' => $class_id
+        ];
+        $res = $studentLogic->addStudent($data);
+        if ($res === true) {
+            $feedback = [
+                'status' => 1,
+                'msg' => 'succ',
+            ];
+        } else {
+            $feedback = [
+                'status' => -1,
+                'msg' => $res,
+            ];
+        }
+        $this->ajaxReturn($feedback);
+    }
+
+    public function deleteStudent()
+    {
+        $id = I('id', '');
+        if (!$id) {
+            $feedback = [
+                'status' => -1,
+                'msg' => 'id is needed',
+            ];
+            $this->ajaxReturn($feedback);
+        }
+        $studentLogic = D('Student', 'Logic');
+        $res = $studentLogic->deleteStudent($id);
+        if ($res === true) {
+            $feedback = [
+                'status' => 1,
+                'msg' => 'succ',
+            ];
+        } else {
+            $feedback = [
+                'status' => -1,
+                'msg' => $res,
+            ];
+        }
+        $this->ajaxReturn($feedback);
+    }
+
 }
