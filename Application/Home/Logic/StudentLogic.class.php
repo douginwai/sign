@@ -8,8 +8,8 @@ class StudentLogic
     public function getSignList($date)
     {
         $model = D('StudentView');
-        $where['_string'] = "sign_date = '{$date}' or sign_date is NULL ";
-        $list = $model->where($where)
+        $select = $this->getStudentView($date);
+        $list = $select
             ->order('grade_id', 'asc')
             ->order('class_id', 'asc')
             ->order('sign_time', 'asc')
@@ -103,10 +103,10 @@ class StudentLogic
     public function deleteClass($id)
     {
         $classModel = D('Class');
-        $res = $classModel->where('id', $id)->delete();
+        $res = $classModel->where(array('id' => $id))->delete();
         if ($res) {
             $studentModel = D('Student');
-            $studentModel->where('class_id', $id)->delete();
+            $studentModel->where(array('class_id' => $id))->delete();
         }
         return $res ? true : false;
     }
@@ -129,7 +129,7 @@ class StudentLogic
     public function deleteStudent($id)
     {
         $studentModel = D('Student');
-        $res = $studentModel->where('id', $id)->delete();
+        $res = $studentModel->where(array('id' => $id))->delete();
         return $res ? true : false;
     }
 
@@ -157,5 +157,19 @@ class StudentLogic
             ->order('id', 'asc')
             ->select();
         return $list;
+    }
+
+    private function getStudentView($date)
+    {
+        $model = D('Student');
+        $tbStudent = $model->getTableName();
+        $tbClass = D('Class')->getTableName();
+        $tbGrade = D('Grade')->getTableName();
+        $tbRecord = D('Record')->getTableName();
+        $select = $model->join("LEFT JOIN {$tbClass} cla on cla.id = {$tbStudent}.class_id")
+            ->join("LEFT JOIN {$tbGrade} grd on grd.id = cla.grade_id")
+            ->join("LEFT JOIN {$tbRecord} rcd on rcd.student_id = {$tbStudent}.id and rcd.sign_date = '{$date}'")
+            ->field("{$tbStudent}.id,name,class_id,class_name,grade_id,grade_name,sign_date,sign_time");
+        return $select;
     }
 }

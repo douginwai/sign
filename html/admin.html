@@ -28,7 +28,7 @@
             <td>{{item.grade_name}}</td>
             <td>{{item.class_name}}</td>
             <td>
-                <button class="btn btn-danger btn-sm" type="button" onclick="delete_confirm()"> 删除</button>
+                <button class="btn btn-danger btn-sm" type="button" @click="delClass(item.id)"> 删除</button>
             </td>
         </tr>
     </table>
@@ -45,7 +45,7 @@
             <td>{{item.grade_name}} {{item.class_name}}</td>
             <td>{{item.name}}</td>
             <td>
-                <button class="btn btn-danger btn-sm" type="button"> 删除</button>
+                <button class="btn btn-danger btn-sm" type="button" @click="delStudent(item.id)"> 删除</button>
             </td>
         </tr>
     </table>
@@ -78,6 +78,25 @@
                         studentList.items = data.data;
                     }
                 })
+            },
+            delStudent: function (id) {
+                if (confirm("确定删除此记录吗")) {
+                    $.ajax({
+                        type: "GET",
+                        url: "../Home/Index/deleteStudent",
+                        data: {
+                            'id': id
+                        },
+                        success: function (data) {
+                            status = data.status;
+                            if (status == 1) {
+                                init();
+                            } else {
+                                alert(data.msg);
+                            }
+                        }
+                    })
+                }
             }
         }
     });
@@ -96,6 +115,25 @@
                         classList.items = data.data;
                     }
                 })
+            },
+            delClass: function (id) {
+                if (confirm("确定删除此记录吗")) {
+                    $.ajax({
+                        type: "GET",
+                        url: "../Home/Index/deleteClass",
+                        data: {
+                            'id': id
+                        },
+                        success: function (data) {
+                            status = data.status;
+                            if (status == 1) {
+                                init();
+                            } else {
+                                alert(data.msg);
+                            }
+                        }
+                    })
+                }
             }
         }
     });
@@ -104,11 +142,8 @@
         classList.getList();
         studentList.getList();
     }
-    init();
 
-    function delete_confirm() {
-        event.returnValue = confirm("确定删除此记录吗");
-    }
+    init();
 </script>
 
 </html>

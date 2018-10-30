@@ -11,23 +11,27 @@
 <div id="studentList">
     <form role="form" style="padding: 8px 8px 5px;">
         <div class="form-group">
-            <label for="grade_id">选择年级</label>
-            <select class="form-control" id="grade_id" onchange="changeGrade()">
-                <option v-for="item in items" :value="item.id">
-                    {{item.grade_name}}
-                </option>
-            </select>
-            <label for="class_id">选择班级</label>
-            <select class="form-control" id="class_id">
-                <option v-for="item in items" :value="item.id">
-                    {{item.class_name}}
-                </option>
-            </select>
+            <div id="gradeOption">
+                <label for="grade_id">选择年级</label>
+                <select class="form-control" id="grade_id" onchange="changeGrade()">
+                    <option v-for="item in items" :value="item.id">
+                        {{item.grade_name}}
+                    </option>
+                </select>
+            </div>
+            <div id="classOption">
+                <label for="class_id">选择班级</label>
+                <select class="form-control" id="class_id">
+                    <option v-for="item in items" :value="item.id">
+                        {{item.class_name}}
+                    </option>
+                </select>
+            </div>
 
-            <label for="class_name">班级名</label>
-            <input type="text" class="form-control" id="class_name" placeholder="请输入班级名">
+            <label for="name">学生姓名</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入学生姓名">
         </div>
-        <button type="button" class="btn btn-default" onclick="addClass()">提交</button>
+        <button type="button" class="btn btn-default" onclick="addStu()">提交</button>
     </form>
 </div>
 
@@ -44,7 +48,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script>
     var gradeList = new Vue({
-        el: '#grade_id',
+        el: '#gradeOption',
         data: {
             items: []
         },
@@ -62,18 +66,35 @@
         }
     });
     var classList = new Vue({
-        el: '#class_id',
+        el: '#classOption',
         data: {
             items: []
         },
         methods: {
-            addClass: function (grade_id, class_name) {
+            getList: function (grade_id) {
                 $.ajax({
                     type: "GET",
-                    url: "../Home/Index/addClass",
+                    url: "../Home/Index/classList",
                     data: {
                         'grade_id': grade_id,
-                        'class_name': class_name
+                    },
+                    success: function (data) {
+                        classList.items = data.data;
+                    }
+                })
+            }
+        }
+    });
+
+    var addStudent = new Vue({
+        methods: {
+            add: function (class_id, name) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Home/Index/addStudent",
+                    data: {
+                        'class_id': class_id,
+                        'name': name
                     },
                     success: function (data) {
                         status = data.status;
@@ -90,20 +111,20 @@
 
     function init() {
         gradeList.getList();
+        changeGrade();
     }
-    init();
 
-    function addClass() {
-        var grade_id = $('#grade_id').val();
-        var class_name = $('#class_name').val();
-        addCla.addClass(grade_id, class_name);
+    function addStu() {
+        var name = $('#name').val();
+        var class_id = $('#class_id').val();
+        addStudent.add(class_id, name);
     }
 
     function changeGrade() {
-        var grade_id = $('#grade_id').val();
-        alert(grade_id);
+        var grade_id = $('#grade_id').val() ? $('#grade_id').val() : 1;
+        classList.getList(grade_id);
     }
-
+    init();
 </script>
 
 </html>
