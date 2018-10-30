@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增加班级</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="studentList">
+    <form role="form" style="padding: 8px 8px 5px;">
+        <div class="form-group">
+            <label for="grade_id">选择年级</label>
+            <select class="form-control" id="grade_id">
+                <option v-for="item in items" value="{{item.id}}">
+                    {{item.grade_name}}
+                </option>
+            </select>
+
+            <label for="class_name">班级名</label>
+            <input type="text" class="form-control" id="class_name" placeholder="请输入班级名" id="class_id">
+        </div>
+        <button type="button" class="btn btn-default" onclick="addClass()">提交</button>
+    </form>
+</div>
+
+
+<ul class="breadcrumb">
+    <li><a href="index.html">签到概况</a></li>
+    <li><a href="list.html">签到列表</a></li>
+    <li class="active"><a href="admin.html">管理</a></li>
+</ul>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+    var gradeList = new Vue({
+        el: '#grade_id',
+        data: {
+            items: []
+        },
+        methods: {
+            getList: function () {
+                $.ajax({
+                    type: "GET",
+                    url: "../Home/Index/gradeList",
+                    data: {},
+                    success: function (data) {
+                        gradeList.items = data.data;
+                    }
+                })
+            }
+        }
+    });
+    var addCla = new Vue({
+        el: '#classList',
+        data: {
+            items: []
+        },
+        methods: {
+            addClass: function (grade_id, class_name) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Home/Index/addClass",
+                    data: {
+                        'grade_id': grade_id,
+                        'class_name': class_name
+                    },
+                    success: function (data) {
+                        status = data.status;
+                        if (status == 1) {
+                            window.location = "admin.html";
+                        } else {
+                            alert(data.msg);
+                        }
+
+                    }
+                })
+            }
+        }
+    });
+
+    function init() {
+        gradeList.getList();
+    }
+    init();
+
+    function addClass() {
+        var grade_id = $('#grade_id').val();
+        alert(grade_id);
+//        var class_name = $('#class_name').val();
+//        addCla.addClass(grade_id, class_name);
+    }
+
+</script>
+
+</html>

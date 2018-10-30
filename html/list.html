@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>签到概况</title>
+    <title>签到列表</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -21,27 +21,25 @@
         </div><!-- /.row -->
     </form>
 </div>
-<div id="sumState">
-    <p class="text-center">总人数:{{studentCount}} 签到人数:{{recordCount}}</p>
-
+<div id="studentList">
     <table class="table">
         <tr>
             <th>班级</th>
-            <th>应到</th>
-            <th>签到</th>
+            <th>姓名</th>
+            <th>签到时间</th>
         </tr>
         <tr v-for="item in items" style="text-align: center">
             <td>{{item.grade_name}} {{item.class_name}}</td>
-            <td>{{item.total_cnt}}</td>
-            <td>{{item.sign_cnt}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.sign_time}}</td>
         </tr>
     </table>
 </div>
 
 
 <ul class="breadcrumb">
-    <li class="active"><a href="index.html">签到概况</a></li>
-    <li><a href="list.html">签到列表</a></li>
+    <li><a href="index.html">签到概况</a></li>
+    <li class="active"><a href="list.html">签到列表</a></li>
     <li><a href="admin.html">管理</a></li>
 </ul>
 
@@ -50,35 +48,31 @@
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
-    var sumState = new Vue({
-        el: '#sumState',
+    var studentList = new Vue({
+        el: '#studentList',
         data: {
-            studentCount: "",
-            recordCount: "",
             items: []
         },
         methods: {
-            getSumState: function (date) {
+            getList: function (date) {
                 $.ajax({
                     type: "GET",
-                    url: "../Home/Index/state",
+                    url: "../Home/Index/signList",
                     data: {
                         'date': date
                     },
                     success: function (data) {
-                        sumState.studentCount = data.data.studentCount;
-                        sumState.recordCount = data.data.recordCount;
-                        sumState.items = data.data.list;
+                        studentList.items = data.data;
                     }
                 })
             }
         }
     });
+    studentList.getList();
 
-    sumState.getSumState();
     function search() {
         var date = $('#date').val();
-        sumState.getSumState(date);
+        studentList.getList(date);
     }
 </script>
 

@@ -5,11 +5,24 @@ namespace Home\Logic;
 class StudentLogic
 {
 
-    public function getStudentList($date)
+    public function getSignList($date)
     {
         $model = D('StudentView');
         $where['_string'] = "sign_date = '{$date}' or sign_date is NULL ";
         $list = $model->where($where)
+            ->order('grade_id', 'asc')
+            ->order('class_id', 'asc')
+            ->order('sign_time', 'asc')
+            ->order('id', 'asc')
+            ->select();
+        return $list;
+    }
+
+    public function getStudentList()
+    {
+        $model = D('StudentView');
+        $list = $model->distinct(true)
+            ->group('id')
             ->order('grade_id', 'asc')
             ->order('class_id', 'asc')
             ->order('id', 'asc')
@@ -117,4 +130,22 @@ class StudentLogic
         return $res ? true : false;
     }
 
+    public function classList()
+    {
+        $classModel = D('ClassView');
+        $list = $classModel
+            ->order('grade_id', 'asc')
+//            ->order('class_name', 'asc')
+            ->select();
+        return $list;
+    }
+
+    public function gradeList()
+    {
+        $gradeModel = D('Grade');
+        $list = $gradeModel
+            ->order('id', 'asc')
+            ->select();
+        return $list;
+    }
 }

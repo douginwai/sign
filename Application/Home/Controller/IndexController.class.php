@@ -15,11 +15,23 @@ class IndexController extends Controller
         dump($list);
     }
 
-    public function studentList()
+    public function signList()
     {
         $studentLogic = D('Student', 'Logic');
         $date = I('date', date('Y-m-d', time()));
-        $list = $studentLogic->getStudentList($date);
+        $list = $studentLogic->getSignList($date);
+        $feedback = [
+            'status' => 1,
+            'msg' => 'succ',
+            'data' => $list
+        ];
+        $this->ajaxReturn($feedback);
+    }
+
+    public function studentList()
+    {
+        $studentLogic = D('Student', 'Logic');
+        $list = $studentLogic->getStudentList();
         $feedback = [
             'status' => 1,
             'msg' => 'succ',
@@ -31,7 +43,7 @@ class IndexController extends Controller
     public function state()
     {
         $studentLogic = D('Student', 'Logic');
-        $date = date('Y-m-d', time());
+        $date = I('date', date('Y-m-d', time()));
         $list = $studentLogic->getState($date);
         list($studentCount, $recordCount) = $studentLogic->sumState($date);
         $feedback = [
@@ -191,6 +203,30 @@ class IndexController extends Controller
                 'msg' => $res,
             ];
         }
+        $this->ajaxReturn($feedback);
+    }
+
+    public function classList()
+    {
+        $studentLogic = D('Student', 'Logic');
+        $list = $studentLogic->classList();
+        $feedback = [
+            'status' => 1,
+            'msg' => 'succ',
+            'data' => $list
+        ];
+        $this->ajaxReturn($feedback);
+    }
+
+    public function gradeList()
+    {
+        $studentLogic = D('Student', 'Logic');
+        $list = $studentLogic->gradeList();
+        $feedback = [
+            'status' => 1,
+            'msg' => 'succ',
+            'data' => $list
+        ];
         $this->ajaxReturn($feedback);
     }
 

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>签到列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div style="padding: 8px 8px 5px;">
+    <a href="addClass.html">
+        <button id="addCla-btn" class="btn btn-link btn-sm" type="button"> 增加班级
+        </button>
+    </a>
+    <a href="addStudent.html">
+        <button id="addStu-btn" class="btn btn-link btn-sm" type="button"> 增加学生</button>
+    </a>
+</div>
+
+<div id="classList">
+    <table class="table">
+        <tr>
+            <th>年级</th>
+            <th>班级</th>
+            <th>操作</th>
+        </tr>
+        <tr v-for="item in items" style="text-align: center">
+            <td>{{item.grade_name}}</td>
+            <td>{{item.class_name}}</td>
+            <td>
+                <button class="btn btn-danger btn-sm" type="button"> 删除</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="studentList">
+    <table class="table">
+        <tr>
+            <th>班级</th>
+            <th>姓名</th>
+            <th>操作</th>
+        </tr>
+        <tr v-for="item in items" style="text-align: center">
+            <td>{{item.grade_name}} {{item.class_name}}</td>
+            <td>{{item.name}}</td>
+            <td>
+                <button class="btn btn-danger btn-sm" type="button"> 删除</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<ul class="breadcrumb">
+    <li><a href="index.html">签到概况</a></li>
+    <li><a href="list.html">签到列表</a></li>
+    <li class="active"><a href="admin.html">管理</a></li>
+</ul>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+    var studentList = new Vue({
+        el: '#studentList',
+        data: {
+            items: []
+        },
+        methods: {
+            getList: function () {
+                $.ajax({
+                    type: "GET",
+                    url: "../Home/Index/studentList",
+                    data: {},
+                    success: function (data) {
+                        studentList.items = data.data;
+                    }
+                })
+            }
+        }
+    });
+    var classList = new Vue({
+        el: '#classList',
+        data: {
+            items: []
+        },
+        methods: {
+            getList: function () {
+                $.ajax({
+                    type: "GET",
+                    url: "../Home/Index/classList",
+                    data: {},
+                    success: function (data) {
+                        classList.items = data.data;
+                    }
+                })
+            }
+        }
+    });
+
+    function init() {
+        classList.getList();
+        studentList.getList();
+    }
+    init();
+
+</script>
+
+</html>
