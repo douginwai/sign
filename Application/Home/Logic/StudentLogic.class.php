@@ -84,16 +84,19 @@ class StudentLogic
     public function addClass($data)
     {
         $classModel = D('Class');
-
-        if ($classModel->create($data, \Think\Model::MODEL_INSERT)) {
-            $res = $classModel->add($data);
-            if ($res !== false) {
-                return true;
+        try {
+            if ($classModel->create($data, \Think\Model::MODEL_INSERT)) {
+                $res = $classModel->add($data);
+                if ($res !== false) {
+                    return true;
+                } else {
+                    return $classModel->getError();
+                }
             } else {
                 return $classModel->getError();
             }
-        } else {
-            return $classModel->getError();
+        } catch (\Exception $ex) {
+            return '添加失败';
         }
     }
 

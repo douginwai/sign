@@ -28,7 +28,7 @@
             <td>{{item.grade_name}}</td>
             <td>{{item.class_name}}</td>
             <td>
-                <button class="btn btn-danger btn-sm" type="button"> 删除</button>
+                <button class="btn btn-danger btn-sm" type="button" onclick="delete_confirm()"> 删除</button>
             </td>
         </tr>
     </table>
@@ -106,6 +106,9 @@
     }
     init();
 
+    function delete_confirm() {
+        event.returnValue = confirm("确定删除此记录吗");
+    }
 </script>
 
 </html>
