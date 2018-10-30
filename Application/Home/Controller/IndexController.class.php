@@ -209,7 +209,8 @@ class IndexController extends Controller
     public function classList()
     {
         $studentLogic = D('Student', 'Logic');
-        $list = $studentLogic->classList();
+        $grade_id = I('grade_id', '');
+        $list = $studentLogic->classList($grade_id);
         $feedback = [
             'status' => 1,
             'msg' => 'succ',

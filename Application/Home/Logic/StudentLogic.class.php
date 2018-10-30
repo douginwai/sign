@@ -133,13 +133,20 @@ class StudentLogic
         return $res ? true : false;
     }
 
-    public function classList()
+    public function classList($grade_id)
     {
         $classModel = D('ClassView');
-        $list = $classModel
-            ->order('grade_id', 'asc')
-//            ->order('class_name', 'asc')
-            ->select();
+        if ($grade_id) {
+            $where['grade_id'] = $grade_id;
+            $list = $classModel
+                ->where($where)
+                ->order('grade_id', 'asc')
+                ->select();
+        } else {
+            $list = $classModel
+                ->order('grade_id', 'asc')
+                ->select();
+        }
         return $list;
     }
 

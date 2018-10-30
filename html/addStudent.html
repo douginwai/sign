@@ -12,9 +12,15 @@
     <form role="form" style="padding: 8px 8px 5px;">
         <div class="form-group">
             <label for="grade_id">选择年级</label>
-            <select class="form-control" id="grade_id">
+            <select class="form-control" id="grade_id" onchange="changeGrade()">
                 <option v-for="item in items" :value="item.id">
                     {{item.grade_name}}
+                </option>
+            </select>
+            <label for="class_id">选择班级</label>
+            <select class="form-control" id="class_id">
+                <option v-for="item in items" :value="item.id">
+                    {{item.class_name}}
                 </option>
             </select>
 
@@ -55,8 +61,8 @@
             }
         }
     });
-    var addCla = new Vue({
-        el: '#classList',
+    var classList = new Vue({
+        el: '#class_id',
         data: {
             items: []
         },
@@ -93,6 +99,10 @@
         addCla.addClass(grade_id, class_name);
     }
 
+    function changeGrade() {
+        var grade_id = $('#grade_id').val();
+        alert(grade_id);
+    }
 
 </script>
 
