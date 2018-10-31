@@ -7,11 +7,16 @@ use Think\Controller;
 class IndexController extends Controller
 {
 
-    public function test()
+    public function _initialize()
     {
-        $model = D('student');
-        $list = $model->where('1', 1)->select();
-        dump($list);
+        $admin = session('sign_admin');
+        if (!$admin) {
+            $feedback = [
+                'status' => -2,
+                'msg' => 'login first',
+            ];
+            $this->ajaxReturn($feedback);
+        }
     }
 
     public function signList()
@@ -228,6 +233,23 @@ class IndexController extends Controller
             'data' => $list
         ];
         $this->ajaxReturn($feedback);
+    }
+
+    public function qrcode()
+    {
+        $studentId = I('studentId', '');
+        if (!$studentId) {
+            $this->error('studentId 必须');
+        }
+        $url = "http://192.168.31.115/signin/html/signin.html?id={$studentId}";
+        $level = 3;
+        $size = 4;
+        Vendor('phpqrcode.phpqrcode');
+        $errorCorrectionLevel = intval($level);//容错级别
+        $matrixPointSize = intval($size);//生成图片大小
+        //生成二维码图片
+        $object = new \QRcode();
+        $object->png($url, false, $errorCorrectionLevel, $matrixPointSize, 2);
     }
 
 }

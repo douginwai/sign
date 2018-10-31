@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>签到</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="col-sm-6 col-md-3" style="padding: 20% 5px 5px 5px;">
+    <div style="text-align: center;">
+        <img src="" id="res_img">
+        <div class="caption">
+            <h2 id="msg" style="text-align: center;"></h2>
+            <p style="text-align: center;">
+                <a href="index.html" class="btn btn-primary" role="button">
+                    查看概况
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+
+
+    function signIn() {
+        $studentId = getUrlParam('id');
+        $.ajax({
+            type: "GET",
+            url: "../Home/Index/signin",
+            data: {
+                'id': $studentId,
+            },
+            success: function (data) {
+                status = data.status;
+                if (status == 1) {
+                    $('#res_img').attr('src', 'img/success.png');
+                    $('#msg').text('success');
+                    $('#msg').css({color: "#4AD840"});
+                } else {
+                    $('#res_img').attr('src', 'img/error.png');
+                    $('#msg').text(data.msg);
+                    $('#msg').css({color: "#E74848"});
+                }
+            }
+        })
+    }
+
+    function getUrlParam(paraName) {
+        var url = document.location.toString();
+        var arrObj = url.split("?");
+
+        if (arrObj.length > 1) {
+            var arrPara = arrObj[1].split("&");
+            var arr;
+
+            for (var i = 0; i < arrPara.length; i++) {
+                arr = arrPara[i].split("=");
+
+                if (arr != null && arr[0] == paraName) {
+                    return arr[1];
+                }
+            }
+            return "";
+        }
+        else {
+            return "";
+        }
+    }
+
+    function checkLogin() {
+        $.ajax({
+            type: "GET",
+            url: "../Home/Public/isLogin",
+            success: function (data) {
+                status = data.status;
+                if (status != 1) {
+                    window.location = "login.html";
+                } else {
+                    signIn();
+                }
+            }
+        })
+    }
+
+    function init() {
+        checkLogin();
+    }
+
+    init();
+
+</script>
+
+</html>

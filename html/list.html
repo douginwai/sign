@@ -68,12 +68,29 @@
             }
         }
     });
-    studentList.getList();
-
     function search() {
         var date = $('#date').val();
         studentList.getList(date);
     }
+
+    function checkLogin() {
+        $.ajax({
+            type: "GET",
+            url: "../Home/Public/isLogin",
+            success: function (data) {
+                status = data.status;
+                if (status != 1) {
+                    window.location = "login.html";
+                }
+            }
+        })
+    }
+    function init(){
+        checkLogin();
+        studentList.getList();
+    }
+    init();
+
 </script>
 
 </html>

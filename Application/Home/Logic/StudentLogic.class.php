@@ -58,7 +58,7 @@ class StudentLogic
         $student_id = $data['student_id'];
         $recordModel = D('Record');
         $studentModel = D('Student');
-        $student = $studentModel->where('id', $student_id)->find();
+        $student = $studentModel->where(["id" => $student_id])->find();
         if (!$student) {
             return 'student not found';
         }

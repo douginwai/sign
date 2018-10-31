@@ -110,6 +110,7 @@
     });
 
     function init() {
+        checkLogin();
         gradeList.getList();
         changeGrade();
     }
@@ -124,7 +125,20 @@
         var grade_id = $('#grade_id').val() ? $('#grade_id').val() : 1;
         classList.getList(grade_id);
     }
+    function checkLogin() {
+        $.ajax({
+            type: "GET",
+            url: "../Home/Public/isLogin",
+            success: function (data) {
+                status = data.status;
+                if (status != 1) {
+                    window.location = "login.html";
+                }
+            }
+        })
+    }
     init();
+
 </script>
 
 </html>

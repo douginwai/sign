@@ -8,7 +8,7 @@ class StudentViewModel extends ViewModel
 {
     public $viewFields = array(
         'Student' => [
-            'id', 'name', 'sex', 'class_id',
+            'id', 'name',  'class_id',
             '_type' => 'LEFT'
         ],
         'Class' => [

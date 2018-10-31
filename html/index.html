@@ -75,11 +75,30 @@
         }
     });
 
-    sumState.getSumState();
+
+
     function search() {
         var date = $('#date').val();
         sumState.getSumState(date);
     }
+    function checkLogin() {
+        $.ajax({
+            type: "GET",
+            url: "../Home/Public/isLogin",
+            success: function (data) {
+                status = data.status;
+                if (status != 1) {
+                    window.location = "login.html";
+                }
+            }
+        })
+    }
+    function init(){
+        checkLogin();
+        sumState.getSumState();
+    }
+    init();
+
 </script>
 
 </html>

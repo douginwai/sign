@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div style="padding: 20% 8px 5px;">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">用户登录</h3>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="account" class="col-sm-2 control-label">账号</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="account" placeholder="请输入账号">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">密码</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password" placeholder="请输入密码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-default" onclick="smt()">登录</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+
+    function smt() {
+        account = $('#account').val();
+        password = $('#password').val();
+        $.ajax({
+            type: "POST",
+            url: "../Home/Public/login",
+            data: {
+                'account': account,
+                'password': password
+            },
+            success: function (data) {
+                status = data.status;
+                if (status == 1) {
+                    window.location = "index.html";
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
+    }
+</script>
+
+</html>
