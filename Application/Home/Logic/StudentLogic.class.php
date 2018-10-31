@@ -130,6 +130,9 @@ class StudentLogic
     {
         $studentModel = D('Student');
         $res = $studentModel->where(array('id' => $id))->delete();
+        if ($res) {
+            D('Record')->where(array('student_id' => $id))->delete();
+        }
         return $res ? true : false;
     }
 
