@@ -45,6 +45,9 @@
             <td>{{item.grade_name}} {{item.class_name}}</td>
             <td>{{item.name}}</td>
             <td>
+                <a :href="'../Home/Index/qrcode?studentId='+item.id">
+                    <button type="button" class="btn btn-default btn-sm">二维码</button>
+                </a>
                 <button class="btn btn-danger btn-sm" type="button" @click="delStudent(item.id)"> 删除</button>
             </td>
         </tr>
@@ -137,6 +140,7 @@
             }
         }
     });
+
     function checkLogin() {
         $.ajax({
             type: "GET",
@@ -149,11 +153,13 @@
             }
         })
     }
+
     function init() {
         checkLogin();
         classList.getList();
         studentList.getList();
     }
+
     init();
 </script>
 
