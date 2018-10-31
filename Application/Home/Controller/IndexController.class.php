@@ -241,7 +241,7 @@ class IndexController extends Controller
         if (!$studentId) {
             $this->error('studentId 必须');
         }
-        $url = "http://192.168.31.115/signin/html/signin.html?id={$studentId}";
+        $url = "http://qrsigin.applinzi.com/html/signin.html?id={$studentId}";
         $level = 3;
         $size = 4;
         Vendor('phpqrcode.phpqrcode');
