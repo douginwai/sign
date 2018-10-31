@@ -45,7 +45,7 @@
             <td>{{item.grade_name}} {{item.class_name}}</td>
             <td>{{item.name}}</td>
             <td>
-                <a :href="'../Home/Index/qrcode?studentId='+item.id">
+                <a :href="'../index.php/Home/Index/qrcode?studentId='+item.id">
                     <button type="button" class="btn btn-default btn-sm">二维码</button>
                 </a>
                 <button class="btn btn-danger btn-sm" type="button" @click="delStudent(item.id)"> 删除</button>
@@ -75,7 +75,7 @@
             getList: function () {
                 $.ajax({
                     type: "GET",
-                    url: "../Home/Index/studentList",
+                    url: "../index.php/Home/Index/studentList",
                     data: {},
                     success: function (data) {
                         studentList.items = data.data;
@@ -86,7 +86,7 @@
                 if (confirm("确定删除此记录吗")) {
                     $.ajax({
                         type: "GET",
-                        url: "../Home/Index/deleteStudent",
+                        url: "../index.php/Home/Index/deleteStudent",
                         data: {
                             'id': id
                         },
@@ -112,7 +112,7 @@
             getList: function () {
                 $.ajax({
                     type: "GET",
-                    url: "../Home/Index/classList",
+                    url: "../index.php/Home/Index/classList",
                     data: {},
                     success: function (data) {
                         classList.items = data.data;
@@ -123,7 +123,7 @@
                 if (confirm("确定删除此记录吗")) {
                     $.ajax({
                         type: "GET",
-                        url: "../Home/Index/deleteClass",
+                        url: "../index.php/Home/Index/deleteClass",
                         data: {
                             'id': id
                         },
@@ -144,7 +144,7 @@
     function checkLogin() {
         $.ajax({
             type: "GET",
-            url: "../Home/Public/isLogin",
+            url: "../index.php/Home/Public/isLogin",
             success: function (data) {
                 status = data.status;
                 if (status != 1) {

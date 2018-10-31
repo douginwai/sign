@@ -46,7 +46,7 @@
         password = $('#password').val();
         $.ajax({
             type: "POST",
-            url: "../Home/Public/login",
+            url: "../index.php/Home/Public/login",
             data: {
                 'account': account,
                 'password': password

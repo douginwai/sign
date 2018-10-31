@@ -31,7 +31,7 @@
         $studentId = getUrlParam('id');
         $.ajax({
             type: "GET",
-            url: "../Home/Index/signin",
+            url: "../index.php/Home/Index/signin",
             data: {
                 'id': $studentId,
             },
@@ -75,7 +75,7 @@
     function checkLogin() {
         $.ajax({
             type: "GET",
-            url: "../Home/Public/isLogin",
+            url: "../index.php/Home/Public/isLogin",
             success: function (data) {
                 status = data.status;
                 if (status != 1) {

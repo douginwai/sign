@@ -56,7 +56,7 @@
             getList: function () {
                 $.ajax({
                     type: "GET",
-                    url: "../Home/Index/gradeList",
+                    url: "../index.php/Home/Index/gradeList",
                     data: {},
                     success: function (data) {
                         gradeList.items = data.data;
@@ -74,7 +74,7 @@
             getList: function (grade_id) {
                 $.ajax({
                     type: "GET",
-                    url: "../Home/Index/classList",
+                    url: "../index.php/Home/Index/classList",
                     data: {
                         'grade_id': grade_id,
                     },
@@ -91,7 +91,7 @@
             add: function (class_id, name) {
                 $.ajax({
                     type: "GET",
-                    url: "../Home/Index/addStudent",
+                    url: "../index.php/Home/Index/addStudent",
                     data: {
                         'class_id': class_id,
                         'name': name
@@ -128,7 +128,7 @@
     function checkLogin() {
         $.ajax({
             type: "GET",
-            url: "../Home/Public/isLogin",
+            url: "../index.php/Home/Public/isLogin",
             success: function (data) {
                 status = data.status;
                 if (status != 1) {

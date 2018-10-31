@@ -57,7 +57,7 @@
             getList: function (date) {
                 $.ajax({
                     type: "GET",
-                    url: "../Home/Index/signList",
+                    url: "../index.php/Home/Index/signList",
                     data: {
                         'date': date
                     },
@@ -76,7 +76,7 @@
     function checkLogin() {
         $.ajax({
             type: "GET",
-            url: "../Home/Public/isLogin",
+            url: "../index.php/Home/Public/isLogin",
             success: function (data) {
                 status = data.status;
                 if (status != 1) {
