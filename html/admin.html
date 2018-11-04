@@ -27,7 +27,7 @@
     <div id="qrcode_div"
          style="margin-left:10%;margin-top:10%;width:80%;text-align: center;background: #FFFFFF;padding: 5px;">
         <h4 id="qrcode_txt"></h4>
-        <img id="qrcode_img" src="../index.php/Home/Index/qrcode?studentId=4"/>
+        <img id="qrcode_img" src=""/>
         <br/>
         <br/>
         <p>
@@ -140,7 +140,7 @@
                         if (status == 1) {
                             h = data.data.student.grade_name + data.data.student.class_name + " " + data.data.student.name;
                             $('#qrcode_txt').html(h);
-                            $('#qrcode_img').attr('src', data.qrcode_url);
+                            $('#qrcode_img').attr('src', data.data.qrcode_url);
                             $('#modal').css("display", "block");
                         } else {
                             alert(data.msg);
