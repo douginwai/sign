@@ -7,13 +7,11 @@ class StudentLogic
 
     public function getSignList($date)
     {
-        $model = D('StudentView');
         $select = $this->getStudentView($date);
         $list = $select
             ->order('grade_id', 'asc')
-            ->order('class_id', 'asc')
+            ->order('class_name', 'asc')
             ->order('sign_time', 'asc')
-            ->order('id', 'asc')
             ->select();
         return $list;
     }
@@ -24,8 +22,7 @@ class StudentLogic
         $list = $model->distinct(true)
             ->group('id')
             ->order('grade_id', 'asc')
-            ->order('class_id', 'asc')
-            ->order('id', 'asc')
+            ->order('class_name', 'asc')
             ->select();
         return $list;
     }
@@ -174,5 +171,12 @@ class StudentLogic
             ->join("LEFT JOIN {$tbRecord} rcd on rcd.student_id = {$tbStudent}.id and rcd.sign_date = '{$date}'")
             ->field("{$tbStudent}.id,name,class_id,class_name,grade_id,grade_name,sign_date,sign_time");
         return $select;
+    }
+
+    public function studentDetail($id)
+    {
+        $model = D('StudentView');
+        $student = $model->where(array('id' => $id))->find();
+        return $student;
     }
 }

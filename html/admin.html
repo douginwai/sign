@@ -5,8 +5,36 @@
     <title>签到列表</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+            outline: 0;
+            -webkit-overflow-scrolling: touch;
+            background-color: rgb(0, 0, 0);
+            filter: alpha(opacity=60);
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+        }
+    </style>
 </head>
 <body>
+<div id="modal" class="modal" style="display: none;">
+    <div id="qrcode_div"
+         style="margin-left:20%;margin-top:10%;width:60%;text-align: center;background: #FFFFFF;padding: 10px;">
+        <h4 id="qrcode_txt"></h4>
+        <img id="qrcode_img" src="../index.php/Home/Index/qrcode?studentId=4"/>
+        <br/>
+        <br/>
+        <p>
+            <button id="close" class="btn btn-default btn-sm" onclick="closeModal()">关闭</button>
+        </p>
+    </div>
+</div>
 <div style="padding: 8px 8px 5px;">
     <a href="addClass.html">
         <button id="addCla-btn" class="btn btn-link btn-sm" type="button"> 增加班级
@@ -45,9 +73,8 @@
             <td>{{item.grade_name}} {{item.class_name}}</td>
             <td>{{item.name}}</td>
             <td>
-                <a :href="'../index.php/Home/Index/qrcode?studentId='+item.id">
-                    <button type="button" class="btn btn-default btn-sm">二维码</button>
-                </a>
+                <button type="button" class="btn btn-default btn-sm" id="qrcode_btn" @click="show_qrcode(item.id)">二维码
+                </button>
                 <button class="btn btn-danger btn-sm" type="button" @click="delStudent(item.id)"> 删除</button>
             </td>
         </tr>
@@ -100,6 +127,26 @@
                         }
                     })
                 }
+            },
+            show_qrcode: function (id) {
+                $.ajax({
+                    type: "GET",
+                    url: "../index.php/Home/Index/studentDetail",
+                    data: {
+                        'studentId': id
+                    },
+                    success: function (data) {
+                        status = data.status;
+                        if (status == 1) {
+                            h = data.data.student.grade_name + data.data.student.class_name + " " + data.data.student.name;
+                            $('#qrcode_txt').html(h);
+                            $('#qrcode_img').attr('src', data.qrcode_url);
+                            $('#modal').css("display", "block");
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                })
             }
         }
     });
@@ -141,6 +188,7 @@
         }
     });
 
+
     function checkLogin() {
         $.ajax({
             type: "GET",
@@ -152,6 +200,10 @@
                 }
             }
         })
+    }
+
+    function closeModal() {
+        $('#modal').css("display", "none");
     }
 
     function init() {

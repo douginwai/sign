@@ -6,7 +6,6 @@ use Think\Controller;
 
 class IndexController extends Controller
 {
-
     public function _initialize()
     {
         $admin = session('sign_admin');
@@ -241,7 +240,7 @@ class IndexController extends Controller
         if (!$studentId) {
             $this->error('studentId 必须');
         }
-        $url = "http://qrsigin.applinzi.com/html/signin.html?id={$studentId}";
+        $url =  C('DOMAIN_URL') . "/html/signin.html?id={$studentId}";
         $level = 3;
         $size = 4;
         Vendor('phpqrcode.phpqrcode');
@@ -250,6 +249,27 @@ class IndexController extends Controller
         //生成二维码图片
         $object = new \QRcode();
         $object->png($url, false, $errorCorrectionLevel, $matrixPointSize, 2);
+    }
+
+    public function studentDetail()
+    {
+        $studentId = I('studentId', '');
+        if (!$studentId) {
+            $this->error('studentId 必须');
+        }
+        $studentLogic = D('Student', 'Logic');
+        $student = $studentLogic->studentDetail($studentId);
+        $data = [
+            'student' => $student,
+            'qrcode_url' => C('DOMAIN_URL') . "/index.php/Home/Index/qrcode?studentId={$studentId}"
+        ];
+        $feedback = [
+            'status' => 1,
+            'msg' => 'succ',
+            'data' => $data
+        ];
+        $this->ajaxReturn($feedback);
+
     }
 
 }
